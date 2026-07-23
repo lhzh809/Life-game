@@ -1,0 +1,38 @@
+# Project: lifegame
+# Makefile created by Red Panda C++ 3.4.3279
+
+CXX      = "g++.exe"
+CC       = "gcc.exe"
+WINDRES  = "windres.exe"
+RM       = del /q /f
+CD       = cd /d
+LIBS     = "-mwindows" "-Wl,--stack,12582912" "-s" "-lraylib" "-lopengl32" "-lgdi32" "-lwinmm" "-static"
+INCS     = 
+CXXINCS  = 
+CXXFLAGS = $(CXXINCS) "-fno-ms-extensions" "-O1" "-pipe" "-Werror=return-type" "-Werror=vla"
+CFLAGS   = $(INCS) "-fno-ms-extensions" "-O1" "-pipe" "-Werror=implicit-int" "-Werror=return-type" "-Werror=vla"
+NASM_FLAGS   =  "-f" "elf64"
+WINDRESFLAGS = 
+RES      = lifegame_private.res
+OBJ      = main.o $(RES)
+BIN      = lifegame.exe
+LINKOBJ  = "main.o" "lifegame_private.res"
+CLEANOBJ = "main.o" "lifegame_private.res" "lifegame.exe"
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	-$(RM) $(CLEANOBJ) >NUL 2>&1
+
+lifegame.exe: $(OBJ)
+
+	$(CXX) $(LINKOBJ) -o "lifegame.exe" $(LIBS)
+
+main.o: main.cpp
+	$(CXX) -c "main.cpp" -o "main.o" $(CXXFLAGS) 
+
+lifegame_private.res: lifegame_private.rc 
+	$(WINDRES) -i "lifegame_private.rc" --input-format=rc -o "lifegame_private.res" -O coff $(WINDRESFLAGS) 
+
